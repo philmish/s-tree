@@ -5,7 +5,7 @@ import (
 )
 
 func TestPush(t *testing.T) {
-	tree := New()
+	tree := NewRadix()
 	err := tree.Push("abcde")
 	if err != nil {
 		t.Errorf("%s\n", err.Error())
@@ -16,7 +16,7 @@ func TestPush(t *testing.T) {
 }
 
 func TestSearch(t *testing.T) {
-    rt := New()
+    rt := NewRadix()
 	err := rt.Push("abcde")
 	if err != nil {
 		t.Errorf("%s\n", err.Error())

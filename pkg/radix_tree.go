@@ -6,7 +6,7 @@ type RadixTree struct {
     t *Tree
 }
 
-func New() *RadixTree {
+func NewRadix() *RadixTree {
     return &RadixTree{
         t: createTree(),
     }
@@ -23,9 +23,38 @@ func valsFromString(data string) values {
 	return vals
 }
 
+func (t *Tree) radixAdd(vals values) error {
+	if t.Depth() == 0 {
+		return t.addBranch(vals)
+	}
+	cursor := t.Root
+	var lvlCursor *TreeLevel
+	curLvl := 0
+	var b value
+	for len(vals) > 0 {
+		lvlCursor = t.Levels[curLvl]
+		b, vals = vals[0], vals[1:]
+		exists := lvlCursor.GetNodeByValue(b)
+		if exists == nil {
+			n := CreateNode(b, cursor)
+			lvlCursor.Nodes = append(lvlCursor.Nodes, n)
+			cursor = n
+		} else {
+			cursor = exists
+		}
+		if len(vals) > 0 {
+			curLvl += 1
+		}
+		if curLvl >= t.Depth() {
+			t.Levels = append(t.Levels, newLevel())
+		}
+	}
+	return nil
+}
+
 func (rt *RadixTree) Push(data string) error {
     vals := valsFromString(data)
-    return rt.t.PushSquence(vals)
+    return rt.t.radixAdd(vals)
 }
 
 func (rt *RadixTree) Search(data string) error {

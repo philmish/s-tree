@@ -24,22 +24,18 @@ func createTree() (tree *Tree) {
 	}
 }
 
-func (t Tree) LastLevel() (*TreeLevel, error) {
+func (t Tree) lastLevel() (*TreeLevel, error) {
 	if t.Depth() == 0 {
 		return nil, fmt.Errorf("Empty Tree")
 	}
 	return t.Levels[t.Depth()-1], nil
 }
 
-func (t *Tree) addFirstBranch(data values) error {
-	cursor := t.Root
-	b, data := data[0], data[1:]
-	n := CreateNode(b, cursor)
-	err := t.AddLevel(n)
-	if err != nil {
-		return err
-	}
-	cursor = n
+func (t *Tree) addBranch(data values) error {
+    cursor := t.Root
+    var b []byte
+    var n *Node
+    var err error
 	for len(data) > 0 {
 		b, data = data[0], data[1:]
 		n = CreateNode(b, cursor)
@@ -69,13 +65,25 @@ func (t *Tree) AddLevel(n *Node) error {
 	return nil
 }
 
-func (t *Tree) SearchSequence(vals values) error {
+func (t Tree) SearchNode(val []byte) (*Node, error) {
+    if t.Depth() == 0 {
+        return nil, fmt.Errorf("Tree is emtpy")
+    }
+    for _, lvl := range t.Levels {
+        exists := lvl.GetNodeByValue(val)
+        if exists != nil {
+            return exists, nil
+        }
+    }
+    return nil, fmt.Errorf("%s not found\n", string(val))
+}
+
+func (t Tree) SearchSequence(vals values) error {
 	if len(vals) > t.Depth() {
 		return fmt.Errorf("%v not found\n", vals)
 	} else if t.Depth() == 0 {
 		return fmt.Errorf("Tree is empty\n")
 	}
-
 	var b value
 	cursor := t.Root
 	for len(vals) > 0 {
@@ -93,49 +101,4 @@ func (t *Tree) SearchSequence(vals values) error {
 		}
 	}
 	return nil
-}
-
-func (t *Tree) PushSquence(vals values) error {
-	if t.Depth() == 0 {
-		return t.addFirstBranch(vals)
-	}
-	cursor := t.Root
-	var lvlCursor *TreeLevel
-	curLvl := 0
-	var b value
-	for len(vals) > 0 {
-		lvlCursor = t.Levels[curLvl]
-		b, vals = vals[0], vals[1:]
-		exists := lvlCursor.GetNodeByValue(b)
-		if exists == nil {
-			n := CreateNode(b, cursor)
-			lvlCursor.Nodes = append(lvlCursor.Nodes, n)
-			cursor = n
-		} else {
-			cursor = exists
-		}
-		if len(vals) > 0 {
-			curLvl += 1
-		}
-		if curLvl >= t.Depth() {
-			t.Levels = append(t.Levels, newLevel())
-		}
-	}
-	return nil
-}
-
-func (t *Tree) printLevls() {
-	if t.Depth() == 0 {
-		fmt.Println("No levels in tree")
-		return
-	}
-	for _, lvl := range t.Levels {
-		if lvl.Length() == 0 {
-			break
-		}
-		str := ""
-		for _, n := range lvl.Nodes {
-			str += string(n.Value)
-		}
-	}
 }
