@@ -27,3 +27,8 @@ func (rt *RadixTree) Push(data string) error {
     vals := valsFromString(data)
     return rt.t.PushSquence(vals)
 }
+
+func (rt *RadixTree) Search(data string) error {
+    vals := valsFromString(data)
+    return rt.t.SearchSequence(vals)
+}
