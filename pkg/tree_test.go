@@ -1,6 +1,5 @@
 package pkg
 
-
 import (
 	"testing"
 )
@@ -46,4 +45,29 @@ func TestSearchNode(t *testing.T) {
     if err != nil {
         t.Errorf("%s\n", err.Error())
     }
+}
+
+func TestLeafs(t *testing.T) {
+    tree :=  createTree()
+    data := []values{
+        {[]byte("abc"), []byte("de"),},
+        {[]byte("abc"), []byte("ijk"),},
+    }
+    var err error
+    for _, i := range data {
+        err = tree.addBranch(i)
+        if err != nil {
+            t.Errorf("Failed to add values %v and %v\n", i[0], i[1])
+        }
+    }
+    leafs := tree.Leafs()
+    if len(leafs) != 2 {
+        t.Errorf("Expected 2 leafs got %d", len(leafs))
+    }
+    for _, i := range leafs {
+        if string(i.Value) != "de" && string(i.Value) != "ijk" {
+            t.Errorf("Unknown leaf: %s", string(i.Value))
+        }
+    }
+
 }

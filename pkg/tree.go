@@ -18,6 +18,14 @@ func (t *Tree) Depth() int {
 	return len(t.Levels)
 }
 
+func (t *Tree) Leafs() []*Node {
+    res := make([]*Node, 0)
+    for _, lvl := range t.Levels {
+        res = append(res, lvl.getLeafs()...)
+    }
+    return res
+}
+
 func createTree() (tree *Tree) {
 	root := newNode([]byte(""))
 	return &Tree{
@@ -89,7 +97,7 @@ func (t *Tree) SearchNode(val []byte) (*Node, error) {
     return nil, fmt.Errorf("%s not found\n", string(val))
 }
 
-func (t Tree) SearchSequence(vals values) error {
+func (t *Tree) SearchSequence(vals values) error {
 	if len(vals) > t.Depth() {
 		return fmt.Errorf("%v not found\n", vals)
 	} else if t.Depth() == 0 {
