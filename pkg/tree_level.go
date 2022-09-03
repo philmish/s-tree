@@ -11,6 +11,11 @@ func newLevel() *TreeLevel {
 	}
 }
 
+func (tl *TreeLevel) Append(n *Node) error {
+    tl.Nodes = append(tl.Nodes, n)
+    return nil
+}
+
 func (tl TreeLevel) Length() int {
 	return len(tl.Nodes)
 }
