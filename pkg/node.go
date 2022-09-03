@@ -40,11 +40,13 @@ func (n *Node)addChild(child *Node) error {
 }
 
 func CreateNode(value []byte, parent *Node) *Node {
-    return &Node{
+    n := Node{
         Parent: parent,
         Children: make([]*Node, 0),
         Value: value,
     }
+    parent.addChild(&n)
+    return &n
 }
 
 func (n Node)CompareVal(data []byte) bool {
