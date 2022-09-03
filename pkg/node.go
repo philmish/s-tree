@@ -8,14 +8,14 @@ import (
 type Node struct {
 	Parent   *Node
 	Children []*Node
-	Value    []byte
+	Value    value
 }
 
-func newNode(value []byte) *Node {
+func newNode(v value) *Node {
 	return &Node{
 		Parent:   nil,
 		Children: make([]*Node, 0),
-		Value:    value,
+		Value:    v,
 	}
 }
 
@@ -39,17 +39,17 @@ func (n *Node) addChild(child *Node) error {
 	return nil
 }
 
-func CreateNode(value []byte, parent *Node) *Node {
+func CreateNode(v value, parent *Node) *Node {
 	n := Node{
 		Parent:   parent,
 		Children: make([]*Node, 0),
-		Value:    value,
+		Value:    v,
 	}
 	parent.addChild(&n)
 	return &n
 }
 
-func (n Node) CompareVal(data []byte) bool {
+func (n Node) CompareVal(data value) bool {
 	res := bytes.Compare(data, n.Value)
 	if res == 0 {
 		return true

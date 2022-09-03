@@ -2,33 +2,21 @@ package pkg
 
 import (
 	"fmt"
-	"log"
-	"strings"
 )
 
-type valArray [][]byte
+type value []byte
+type values [][]byte
 
 type Tree struct {
 	Root   *Node
 	Levels []*TreeLevel
 }
 
-func valsFromString(value []string) valArray {
-	vals := make(valArray, 0)
-	var b []byte
-	for len(value) > 0 {
-		log.Println(value[0])
-		b, value = []byte(value[0]), value[1:]
-		vals = append(vals, b)
-	}
-	return vals
-}
-
-func (t *Tree) Depth() int {
+func (t Tree) Depth() int {
 	return len(t.Levels)
 }
 
-func NewTree() (tree *Tree) {
+func createTree() (tree *Tree) {
 	root := newNode([]byte(""))
 	return &Tree{
 		Root:   root,
@@ -36,14 +24,14 @@ func NewTree() (tree *Tree) {
 	}
 }
 
-func (t *Tree) LastLevel() (*TreeLevel, error) {
+func (t Tree) LastLevel() (*TreeLevel, error) {
 	if t.Depth() == 0 {
 		return nil, fmt.Errorf("Empty Tree")
 	}
 	return t.Levels[t.Depth()-1], nil
 }
 
-func (t *Tree) addFirstBranch(data valArray) error {
+func (t *Tree) addFirstBranch(data values) error {
 	cursor := t.Root
 	b, data := data[0], data[1:]
 	n := CreateNode(b, cursor)
@@ -81,17 +69,14 @@ func (t *Tree) AddLevel(n *Node) error {
 	return nil
 }
 
-func (t *Tree) Search(value string) error {
-	if len(value) > t.Depth() {
-		return fmt.Errorf("%s not found\n", value)
+func (t *Tree) SearchSequence(vals values) error {
+	if len(vals) > t.Depth() {
+		return fmt.Errorf("%v not found\n", vals)
 	} else if t.Depth() == 0 {
 		return fmt.Errorf("Tree is empty\n")
 	}
-	value = strings.Trim(value, " ")
-	symbols := strings.Split(value, "")
-	vals := valsFromString(symbols)
 
-	var b []byte
+	var b value
 	cursor := t.Root
 	for len(vals) > 0 {
 		b, vals = vals[0], vals[1:]
@@ -104,23 +89,20 @@ func (t *Tree) Search(value string) error {
 			}
 		}
 		if !found {
-			return fmt.Errorf("%s not found\n", value)
+			return fmt.Errorf("%v not found\n", string(b))
 		}
 	}
 	return nil
 }
 
-func (t *Tree) Push(value string) error {
-	value = strings.Trim(value, " ")
-	symbols := strings.Split(value, "")
-	vals := valsFromString(symbols)
+func (t *Tree) PushSquence(vals values) error {
 	if t.Depth() == 0 {
 		return t.addFirstBranch(vals)
 	}
 	cursor := t.Root
 	var lvlCursor *TreeLevel
 	curLvl := 0
-	var b []byte
+	var b value
 	for len(vals) > 0 {
 		lvlCursor = t.Levels[curLvl]
 		b, vals = vals[0], vals[1:]

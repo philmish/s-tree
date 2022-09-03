@@ -5,12 +5,12 @@ import (
 )
 
 func TestTreePush(t *testing.T) {
-	tree := NewTree()
+	tree := New()
 	err := tree.Push("abcde")
 	if err != nil {
 		t.Errorf("%s\n", err.Error())
 	}
-	if tree.Depth() != 5 {
-		t.Errorf("Expected 5 levels, found %d\n", tree.Depth())
+	if tree.t.Depth() != 5 {
+		t.Errorf("Expected 5 levels, found %d\n", tree.t.Depth())
 	}
 }
