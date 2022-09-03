@@ -2,17 +2,19 @@ package pkg
 
 import (
 	"fmt"
+	"sync"
 )
 
 type value []byte
 type values [][]byte
 
 type Tree struct {
+    sync.RWMutex
 	Root   *Node
 	Levels []*TreeLevel
 }
 
-func (t Tree) Depth() int {
+func (t *Tree) Depth() int {
 	return len(t.Levels)
 }
 
@@ -24,7 +26,7 @@ func createTree() (tree *Tree) {
 	}
 }
 
-func (t Tree) lastLevel() (*TreeLevel, error) {
+func (t *Tree) lastLevel() (*TreeLevel, error) {
 	if t.Depth() == 0 {
 		return nil, fmt.Errorf("Empty Tree")
 	}
@@ -36,13 +38,22 @@ func (t *Tree) addBranch(data values) error {
     var b []byte
     var n *Node
     var err error
+    currLvl := 1
 	for len(data) > 0 {
 		b, data = data[0], data[1:]
 		n = CreateNode(b, cursor)
-		err = t.AddLevel(n)
-		if err != nil {
-			return err
-		}
+        if t.Depth() < currLvl {
+            err = t.AddLevel(n)
+            if err != nil {
+                return err
+            }
+        } else {
+            err = t.Levels[currLvl-1].Append(n)
+            if err != nil {
+                return err
+            }
+        }
+        currLvl++
 		cursor = n
 	}
 	return nil
@@ -65,7 +76,7 @@ func (t *Tree) AddLevel(n *Node) error {
 	return nil
 }
 
-func (t Tree) SearchNode(val []byte) (*Node, error) {
+func (t *Tree) SearchNode(val []byte) (*Node, error) {
     if t.Depth() == 0 {
         return nil, fmt.Errorf("Tree is emtpy")
     }
