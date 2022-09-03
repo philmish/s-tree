@@ -11,19 +11,19 @@ func newLevel() *TreeLevel {
 	}
 }
 
-func (tl *TreeLevel)getLeafs() []*Node {
-    res := make([]*Node, 0)
-    for _, node := range tl.Nodes {
-        if len(node.Children) == 0 {
-            res = append(res, node)
-        }
-    }
-    return res
+func (tl *TreeLevel) getLeafs() []*Node {
+	res := make([]*Node, 0)
+	for _, node := range tl.Nodes {
+		if len(node.Children) == 0 {
+			res = append(res, node)
+		}
+	}
+	return res
 }
 
 func (tl *TreeLevel) Append(n *Node) error {
-    tl.Nodes = append(tl.Nodes, n)
-    return nil
+	tl.Nodes = append(tl.Nodes, n)
+	return nil
 }
 
 func (tl TreeLevel) Length() int {

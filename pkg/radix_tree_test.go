@@ -16,13 +16,13 @@ func TestPush(t *testing.T) {
 }
 
 func TestSearch(t *testing.T) {
-    rt := NewRadix()
+	rt := NewRadix()
 	err := rt.Push("abcde")
 	if err != nil {
 		t.Errorf("%s\n", err.Error())
 	}
-    err = rt.Search("abc")
-    if err != nil {
-        t.Errorf("Not found: %s\n", err.Error())
-    }
+	err = rt.Search("abc")
+	if err != nil {
+		t.Errorf("Not found: %s\n", err.Error())
+	}
 }

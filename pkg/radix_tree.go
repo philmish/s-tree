@@ -3,17 +3,17 @@ package pkg
 import "strings"
 
 type RadixTree struct {
-    t *Tree
+	t *Tree
 }
 
 func NewRadix() *RadixTree {
-    return &RadixTree{
-        t: createTree(),
-    }
+	return &RadixTree{
+		t: createTree(),
+	}
 }
 
 func valsFromString(data string) values {
-    symbols := strings.Split(data, "")
+	symbols := strings.Split(data, "")
 	vals := make(values, 0)
 	var b []byte
 	for len(symbols) > 0 {
@@ -53,11 +53,11 @@ func (t *Tree) radixAdd(vals values) error {
 }
 
 func (rt *RadixTree) Push(data string) error {
-    vals := valsFromString(data)
-    return rt.t.radixAdd(vals)
+	vals := valsFromString(data)
+	return rt.t.radixAdd(vals)
 }
 
 func (rt *RadixTree) Search(data string) error {
-    vals := valsFromString(data)
-    return rt.t.SearchSequence(vals)
+	vals := valsFromString(data)
+	return rt.t.SearchSequence(vals)
 }

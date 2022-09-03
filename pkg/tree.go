@@ -9,7 +9,7 @@ type value []byte
 type values [][]byte
 
 type Tree struct {
-    sync.RWMutex
+	sync.RWMutex
 	Root   *Node
 	Levels []*TreeLevel
 }
@@ -19,11 +19,11 @@ func (t *Tree) Depth() int {
 }
 
 func (t *Tree) Leafs() []*Node {
-    res := make([]*Node, 0)
-    for _, lvl := range t.Levels {
-        res = append(res, lvl.getLeafs()...)
-    }
-    return res
+	res := make([]*Node, 0)
+	for _, lvl := range t.Levels {
+		res = append(res, lvl.getLeafs()...)
+	}
+	return res
 }
 
 func createTree() (tree *Tree) {
@@ -42,26 +42,26 @@ func (t *Tree) lastLevel() (*TreeLevel, error) {
 }
 
 func (t *Tree) addBranch(data values) error {
-    cursor := t.Root
-    var b []byte
-    var n *Node
-    var err error
-    currLvl := 1
+	cursor := t.Root
+	var b []byte
+	var n *Node
+	var err error
+	currLvl := 1
 	for len(data) > 0 {
 		b, data = data[0], data[1:]
 		n = CreateNode(b, cursor)
-        if t.Depth() < currLvl {
-            err = t.AddLevel(n)
-            if err != nil {
-                return err
-            }
-        } else {
-            err = t.Levels[currLvl-1].Append(n)
-            if err != nil {
-                return err
-            }
-        }
-        currLvl++
+		if t.Depth() < currLvl {
+			err = t.AddLevel(n)
+			if err != nil {
+				return err
+			}
+		} else {
+			err = t.Levels[currLvl-1].Append(n)
+			if err != nil {
+				return err
+			}
+		}
+		currLvl++
 		cursor = n
 	}
 	return nil
@@ -85,16 +85,16 @@ func (t *Tree) AddLevel(n *Node) error {
 }
 
 func (t *Tree) SearchNode(val []byte) (*Node, error) {
-    if t.Depth() == 0 {
-        return nil, fmt.Errorf("Tree is emtpy")
-    }
-    for _, lvl := range t.Levels {
-        exists := lvl.GetNodeByValue(val)
-        if exists != nil {
-            return exists, nil
-        }
-    }
-    return nil, fmt.Errorf("%s not found\n", string(val))
+	if t.Depth() == 0 {
+		return nil, fmt.Errorf("Tree is emtpy")
+	}
+	for _, lvl := range t.Levels {
+		exists := lvl.GetNodeByValue(val)
+		if exists != nil {
+			return exists, nil
+		}
+	}
+	return nil, fmt.Errorf("%s not found\n", string(val))
 }
 
 func (t *Tree) SearchSequence(vals values) error {
