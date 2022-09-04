@@ -6,13 +6,13 @@ import (
 )
 
 type RadixTree struct {
-	t *Tree
+	 *Tree
 }
 
 func NewRadix() *RadixTree {
-	return &RadixTree{
-		t: createTree(),
-	}
+    t := RadixTree{}
+    t.Tree = createTree()
+	return &t
 }
 
 func valsFromString(data string) values {
@@ -57,32 +57,22 @@ func (t *Tree) radixAdd(vals values) error {
 
 func (rt *RadixTree) Push(data string) error {
 	vals := valsFromString(data)
-	return rt.t.radixAdd(vals)
+	return rt.radixAdd(vals)
 }
 
 func (rt *RadixTree) Search(data string) error {
 	vals := valsFromString(data)
-	return rt.t.SearchSequence(vals)
+	return rt.SearchSequence(vals)
 }
 
-func (rt *RadixTree) AsyncPush(data string, wg *sync.WaitGroup) error {
-	rt.t.Lock()
-	defer func() {
-		rt.t.Unlock()
-		wg.Done()
-	}()
+func (rt *RadixTree) TSafePush(data string, wg *sync.WaitGroup) error {
 	vals := valsFromString(data)
-	err := rt.t.radixAdd(vals)
+	err := rt.ThreadSafeRadixAdd(vals, wg)
 	return err
 }
 
-func (rt *RadixTree) AsyncSearch(data string, wg *sync.WaitGroup) error {
-	rt.t.Lock()
-	defer func() {
-		rt.t.Unlock()
-		wg.Done()
-	}()
+func (rt *RadixTree) TSafeSearch(data string, wg *sync.WaitGroup) error {
 	vals := valsFromString(data)
-	err := rt.t.SearchSequence(vals)
+	err := rt.ThreadSafeSearchSeq(vals, wg)
 	return err
 }
