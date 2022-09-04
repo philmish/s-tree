@@ -1,6 +1,9 @@
 package pkg
 
-import "strings"
+import (
+	"strings"
+	"sync"
+)
 
 type RadixTree struct {
 	t *Tree
@@ -57,7 +60,29 @@ func (rt *RadixTree) Push(data string) error {
 	return rt.t.radixAdd(vals)
 }
 
+func (rt *RadixTree) AsyncPush(data string, wg *sync.WaitGroup) error {
+	rt.t.Lock()
+	defer func() {
+		rt.t.Unlock()
+		wg.Done()
+	}()
+	vals := valsFromString(data)
+	err := rt.t.radixAdd(vals)
+	return err
+}
+
 func (rt *RadixTree) Search(data string) error {
 	vals := valsFromString(data)
 	return rt.t.SearchSequence(vals)
+}
+
+func (rt *RadixTree) AsyncSearch(data string, wg *sync.WaitGroup) error {
+	rt.t.Lock()
+	defer func() {
+		rt.t.Unlock()
+		wg.Done()
+	}()
+	vals := valsFromString(data)
+	err := rt.t.SearchSequence(vals)
+	return err
 }
