@@ -1,8 +1,10 @@
 package kvdb
 
 import (
-	"github.com/philmish/s-tree/pkg"
+	"fmt"
 	"sync"
+
+	"github.com/philmish/s-tree/pkg"
 )
 
 type KvStore struct {
@@ -26,12 +28,21 @@ func (kv *KvStore) keyExists(key string) bool {
 }
 
 func (kv *KvStore) Get(key string, wg *sync.WaitGroup) (string, error) {
+	kv.RLock()
+	defer func() {
+		kv.RUnlock()
+		wg.Done()
+	}()
 	kBytes := []byte(key)
-	keyNode, err := kv.ThreadSafeSearchNode(kBytes, wg)
-	if err != nil {
-		return "", err
+	node := kv.Levels[0].GetNodeByValue(kBytes)
+	if node == nil {
+		return "", fmt.Errorf("%s not set\n", key)
 	}
-	return string(keyNode.Value), nil
+	if len(node.Children) == 0 {
+		return "", fmt.Errorf("%s not set\n", key)
+	}
+	res := string(node.Children[0].Value)
+	return res, nil
 }
 
 func (kv *KvStore) Set(key, value string, wg *sync.WaitGroup) error {
