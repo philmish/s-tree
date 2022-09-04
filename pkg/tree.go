@@ -152,7 +152,7 @@ func (t *Tree)ThreadSafeSearchNode(val []byte, wg *sync.WaitGroup) (*Node, error
     return res, err
 }
 
-func (t *Tree) ThreadSafeSearchSeq(vals []values, wg *sync.WaitGroup) error {
+func (t *Tree) ThreadSafeSearchSeq(vals values, wg *sync.WaitGroup) error {
     t.RLock()
     defer func() {
         t.RUnlock()

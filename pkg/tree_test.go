@@ -2,6 +2,8 @@ package pkg
 
 import (
 	"testing"
+    "sync"
+    "fmt"
 )
 
 func TestAddBranch(t *testing.T) {
@@ -69,5 +71,27 @@ func TestLeafs(t *testing.T) {
 			t.Errorf("Unexpected leaf: %s", string(i.Value))
 		}
 	}
+}
 
+func TestThreadSafeAdd(t *testing.T) {
+    tree := createTree()
+    data := []values{
+        {[]byte("abc"), []byte("de")},
+        {[]byte("abc"), []byte("ijk")},
+    }
+    wg := sync.WaitGroup{}
+    for _, i := range data {
+        wg.Add(1)
+        go func(n values, wg *sync.WaitGroup) {
+            err := tree.ThreadSafeAddBranch(n, wg)
+            if err != nil {
+                fmt.Println("Err")
+            }
+        }(i, &wg)
+    }
+    wg.Wait()
+    if tree.Depth() != 2 {
+        t.Logf("%v\n", tree.Levels[0].Length())
+        t.Errorf("Expected depth 2 got %d", tree.Depth())
+    }
 }
