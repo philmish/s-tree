@@ -34,6 +34,14 @@ func createTree() (tree *Tree) {
 	}
 }
 
+func NewTree(rootValue string) *Tree {
+	r := []byte(rootValue)
+	return &Tree{
+		Root:   newNode(r),
+		Levels: make([]*TreeLevel, 0),
+	}
+}
+
 func (t *Tree) lastLevel() (*TreeLevel, error) {
 	if t.Depth() == 0 {
 		return nil, fmt.Errorf("Empty Tree")
@@ -122,42 +130,42 @@ func (t *Tree) SearchSequence(vals values) error {
 	return nil
 }
 
-func (t *Tree)ThreadSafeAddBranch(vals values, wg *sync.WaitGroup) error {
-    t.Lock()
-    defer func() {
-        t.Unlock()
-        wg.Done()
-    }()
-    err := t.addBranch(vals)
-    return err
+func (t *Tree) ThreadSafeAddBranch(vals values, wg *sync.WaitGroup) error {
+	t.Lock()
+	defer func() {
+		t.Unlock()
+		wg.Done()
+	}()
+	err := t.addBranch(vals)
+	return err
 }
 
 func (t *Tree) ThreadSafeRadixAdd(vals values, wg *sync.WaitGroup) error {
-    t.Lock()
-    defer func() {
-        t.Unlock()
-        wg.Done()
-    }()
-    err := t.radixAdd(vals)
-    return err
+	t.Lock()
+	defer func() {
+		t.Unlock()
+		wg.Done()
+	}()
+	err := t.radixAdd(vals)
+	return err
 }
 
-func (t *Tree)ThreadSafeSearchNode(val []byte, wg *sync.WaitGroup) (*Node, error) {
-    t.RLock()
-    defer func() {
-        t.RUnlock()
-        wg.Done()
-    }()
-    res, err := t.SearchNode(val)
-    return res, err
+func (t *Tree) ThreadSafeSearchNode(val []byte, wg *sync.WaitGroup) (*Node, error) {
+	t.RLock()
+	defer func() {
+		t.RUnlock()
+		wg.Done()
+	}()
+	res, err := t.SearchNode(val)
+	return res, err
 }
 
 func (t *Tree) ThreadSafeSearchSeq(vals values, wg *sync.WaitGroup) error {
-    t.RLock()
-    defer func() {
-        t.RUnlock()
-        wg.Done()
-    }()
-    err := t.SearchSequence(vals)
-    return err
+	t.RLock()
+	defer func() {
+		t.RUnlock()
+		wg.Done()
+	}()
+	err := t.SearchSequence(vals)
+	return err
 }
