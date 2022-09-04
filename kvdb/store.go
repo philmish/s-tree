@@ -16,11 +16,11 @@ func NewStore() *KvStore {
 }
 
 func (kv *KvStore) keyExists(key string) bool {
-    kv.RLock()
-    defer kv.RUnlock()
-    if kv.Depth() == 0 {
-        return false
-    }
+	kv.RLock()
+	defer kv.RUnlock()
+	if kv.Depth() == 0 {
+		return false
+	}
 	node := kv.Levels[0].GetNodeByValue([]byte(key))
 	return node != nil
 }

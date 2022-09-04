@@ -1,9 +1,9 @@
 package pkg
 
 import (
+	"fmt"
+	"sync"
 	"testing"
-    "sync"
-    "fmt"
 )
 
 func TestAddBranch(t *testing.T) {
@@ -74,47 +74,49 @@ func TestLeafs(t *testing.T) {
 }
 
 func TestThreadSafeAdd(t *testing.T) {
-    tree := createTree()
-    data := []values{
-        {[]byte("abc"), []byte("de")},
-        {[]byte("abc"), []byte("ijk")},
-    }
-    wg := sync.WaitGroup{}
-    for _, i := range data {
-        wg.Add(1)
-        go func(n values, wg *sync.WaitGroup) {
-            err := tree.ThreadSafeAddBranch(n, wg)
-            if err != nil {
-                fmt.Println("Err")
-            }
-        }(i, &wg)
-    }
-    wg.Wait()
-    if tree.Depth() != 2 {
-        t.Logf("%v\n", tree.Levels[0].Length())
-        t.Errorf("Expected depth 2 got %d", tree.Depth())
-    }
+	tree := createTree()
+	data := []values{
+		{[]byte("abc"), []byte("de")},
+		{[]byte("abc"), []byte("ijk")},
+	}
+	wg := sync.WaitGroup{}
+	for _, i := range data {
+		wg.Add(1)
+		go func(n values, wg *sync.WaitGroup) {
+			err := tree.ThreadSafeAddBranch(n, wg)
+			if err != nil {
+				fmt.Println("Err")
+			}
+		}(i, &wg)
+	}
+	wg.Wait()
+	if tree.Depth() != 2 {
+		t.Logf("%v\n", tree.Levels[0].Length())
+		t.Errorf("Expected depth 2 got %d", tree.Depth())
+	}
 }
 
 func TestThreadSafeRadixAdd(t *testing.T) {
-    tree := createTree()
-    data := []values{
-        {[]byte("a"), []byte("b"), []byte("c"), []byte("d")},
-        {[]byte("a"), []byte("b"), []byte("i"), []byte("j")},
-    }
-    wg := sync.WaitGroup{}
-    for _, i := range data {
-        wg.Add(1)
-        go func(n values, wg *sync.WaitGroup) {
-            err := tree.ThreadSafeRadixAdd(n, wg)
-            if err != nil {
-                fmt.Println("Err")
-            }
-        }(i, &wg)
-    }
-    wg.Wait()
-    if tree.Depth() != 4 {
-        t.Logf("%v\n", tree.Levels[0].Length())
-        t.Errorf("Expected depth 4 got %d", tree.Depth())
-    }
+	tree := createTree()
+	data := []values{
+		{[]byte("a"), []byte("b"), []byte("c"), []byte("d")},
+		{[]byte("a"), []byte("b"), []byte("i"), []byte("j")},
+	}
+	wg := sync.WaitGroup{}
+	for _, i := range data {
+		wg.Add(1)
+		go func(n values, wg *sync.WaitGroup) {
+			err := tree.ThreadSafeRadixAdd(n, wg)
+			if err != nil {
+				fmt.Println("Err")
+			}
+		}(i, &wg)
+	}
+	wg.Wait()
+	if tree.Depth() != 4 {
+		t.Errorf("Expected depth 4 got %d", tree.Depth())
+	}
+	if tree.Levels[1].Length() != 1 {
+		t.Errorf("Expected level 2 to have length 1, found %d\n", tree.Levels[1].Length())
+	}
 }

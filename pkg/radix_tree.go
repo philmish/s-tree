@@ -6,12 +6,12 @@ import (
 )
 
 type RadixTree struct {
-	 *Tree
+	*Tree
 }
 
 func NewRadix() *RadixTree {
-    t := RadixTree{}
-    t.Tree = createTree()
+	t := RadixTree{}
+	t.Tree = createTree()
 	return &t
 }
 
@@ -55,23 +55,23 @@ func (t *Tree) radixAdd(vals values) error {
 	return nil
 }
 
-func (rt *RadixTree) Push(data string) error {
+func (rt *RadixTree) PushStr(data string) error {
 	vals := valsFromString(data)
 	return rt.radixAdd(vals)
 }
 
-func (rt *RadixTree) Search(data string) error {
+func (rt *RadixTree) SearchStr(data string) error {
 	vals := valsFromString(data)
 	return rt.SearchSequence(vals)
 }
 
-func (rt *RadixTree) TSafePush(data string, wg *sync.WaitGroup) error {
+func (rt *RadixTree) TSafePushStr(data string, wg *sync.WaitGroup) error {
 	vals := valsFromString(data)
 	err := rt.ThreadSafeRadixAdd(vals, wg)
 	return err
 }
 
-func (rt *RadixTree) TSafeSearch(data string, wg *sync.WaitGroup) error {
+func (rt *RadixTree) TSafeSearchStr(data string, wg *sync.WaitGroup) error {
 	vals := valsFromString(data)
 	err := rt.ThreadSafeSearchSeq(vals, wg)
 	return err
