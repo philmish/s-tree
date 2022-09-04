@@ -60,6 +60,11 @@ func (rt *RadixTree) Push(data string) error {
 	return rt.t.radixAdd(vals)
 }
 
+func (rt *RadixTree) Search(data string) error {
+	vals := valsFromString(data)
+	return rt.t.SearchSequence(vals)
+}
+
 func (rt *RadixTree) AsyncPush(data string, wg *sync.WaitGroup) error {
 	rt.t.Lock()
 	defer func() {
@@ -69,11 +74,6 @@ func (rt *RadixTree) AsyncPush(data string, wg *sync.WaitGroup) error {
 	vals := valsFromString(data)
 	err := rt.t.radixAdd(vals)
 	return err
-}
-
-func (rt *RadixTree) Search(data string) error {
-	vals := valsFromString(data)
-	return rt.t.SearchSequence(vals)
 }
 
 func (rt *RadixTree) AsyncSearch(data string, wg *sync.WaitGroup) error {

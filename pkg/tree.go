@@ -51,7 +51,7 @@ func (t *Tree) addBranch(data values) error {
 		b, data = data[0], data[1:]
 		n = CreateNode(b, cursor)
 		if t.Depth() < currLvl {
-			err = t.AddLevel(n)
+			err = t.addLevel(n)
 			if err != nil {
 				return err
 			}
@@ -67,7 +67,7 @@ func (t *Tree) addBranch(data values) error {
 	return nil
 }
 
-func (t *Tree) AddLevel(n *Node) error {
+func (t *Tree) addLevel(n *Node) error {
 	lvl := newLevel()
 	if t.Depth() == 0 {
 		lvl.Nodes = append(lvl.Nodes, n)
@@ -120,4 +120,44 @@ func (t *Tree) SearchSequence(vals values) error {
 		}
 	}
 	return nil
+}
+
+func (t *Tree)ThreadSafeAddBranch(vals values, wg *sync.WaitGroup) error {
+    t.Lock()
+    defer func() {
+        t.Unlock()
+        wg.Done()
+    }()
+    err := t.addBranch(vals)
+    return err
+}
+
+func (t *Tree) ThreadSafeRadixAdd(vals values, wg *sync.WaitGroup) error {
+    t.Lock()
+    defer func() {
+        t.Unlock()
+        wg.Done()
+    }()
+    err := t.radixAdd(vals)
+    return err
+}
+
+func (t *Tree)ThreadSafeSearchNode(val []byte, wg *sync.WaitGroup) (*Node, error) {
+    t.RLock()
+    defer func() {
+        t.RUnlock()
+        wg.Done()
+    }()
+    res, err := t.SearchNode(val)
+    return res, err
+}
+
+func (t *Tree) ThreadSafeSearchSeq(vals []values, wg *sync.WaitGroup) error {
+    t.RLock()
+    defer func() {
+        t.RUnlock()
+        wg.Done()
+    }()
+    err := t.SearchSequence(vals)
+    return err
 }

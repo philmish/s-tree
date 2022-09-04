@@ -66,7 +66,7 @@ func TestLeafs(t *testing.T) {
 	}
 	for _, i := range leafs {
 		if string(i.Value) != "de" && string(i.Value) != "ijk" {
-			t.Errorf("Unknown leaf: %s", string(i.Value))
+			t.Errorf("Unexpected leaf: %s", string(i.Value))
 		}
 	}
 

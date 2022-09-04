@@ -57,3 +57,7 @@ func (n Node) CompareVal(data value) bool {
 		return false
 	}
 }
+
+func (n Node) isLeaf() bool {
+	return len(n.Children) < 1
+}
