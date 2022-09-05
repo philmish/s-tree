@@ -3,6 +3,7 @@ package kvdb
 import (
 	"fmt"
 	"net"
+	"strings"
 )
 
 type KvClient struct {
@@ -55,4 +56,22 @@ func (kvc *KvClient) Set(key, val string) error {
 		return fmt.Errorf("Failed to set key/value pair: %s\n", result)
 	}
 	return nil
+}
+
+func (kvc *KvClient) Get(key string) (string, error) {
+	conn, err := net.Dial("unix", kvc.Addr)
+	if err != nil {
+		return "", err
+	}
+	defer conn.Close()
+	query := fmt.Sprintf("GET %s", key)
+	result, err := kvc.send(query, conn)
+	if err != nil {
+		return "", err
+	}
+	parts := strings.Split(result, ":")
+	if parts[0] != "RES" {
+		return fmt.Errorf("Failed to set look up %s: %s\n", key, result)
+	}
+	return parts[1], nil
 }
