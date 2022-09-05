@@ -45,7 +45,7 @@ func TestStoreGet(t *testing.T) {
 	wg.Wait()
 	wg.Add(2)
 	v, err := store.Get("a", &wg)
-    v2, err2 := store.Get("b", &wg)
+	v2, err2 := store.Get("b", &wg)
 	wg.Wait()
 	if err != nil {
 		t.Errorf("%s\n", err.Error())
@@ -53,10 +53,10 @@ func TestStoreGet(t *testing.T) {
 	if err2 != nil {
 		t.Errorf("%s\n", err2.Error())
 	}
-    if v != "b" {
-        t.Errorf("Expected a to have value b got %s\n", v)
-    }
-    if v2 != "c" {
-        t.Errorf("Expected b to have value c got %s\n", v2)
-    }
+	if v != "b" {
+		t.Errorf("Expected a to have value b got %s\n", v)
+	}
+	if v2 != "c" {
+		t.Errorf("Expected b to have value c got %s\n", v2)
+	}
 }
