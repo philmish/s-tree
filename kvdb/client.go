@@ -20,7 +20,7 @@ func (kvc *KvClient) send(query string, conn net.Conn) (string, error) {
 		return "", err
 	}
 	str := buf[:n]
-    return string(str), nil
+	return string(str), nil
 }
 
 func (kvc *KvClient) Ping() error {
@@ -29,10 +29,10 @@ func (kvc *KvClient) Ping() error {
 		return err
 	}
 	defer conn.Close()
-    result, err := kvc.send("PING", conn) 
-    if err != nil {
-        return err
-    }
+	result, err := kvc.send("PING", conn)
+	if err != nil {
+		return err
+	}
 	if result != "PONG" {
 		return fmt.Errorf("Expected PONG recieved: %s\n", result)
 	}
@@ -47,10 +47,10 @@ func (kvc *KvClient) Set(key, val string) error {
 	}
 	defer conn.Close()
 	query := fmt.Sprintf("SET %s %s", key, val)
-    result, err := kvc.send(query, conn)
-    if err != nil {
-        return err
-    }
+	result, err := kvc.send(query, conn)
+	if err != nil {
+		return err
+	}
 	if result != "RES:SUCCESS" {
 		return fmt.Errorf("Failed to set key/value pair: %s\n", result)
 	}
