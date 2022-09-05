@@ -66,9 +66,9 @@ func (kv *KvDB) handleConn(conn net.Conn) {
 		}
 		conn.Write([]byte("RES:SUCCESS"))
 		return
-    case "PING":
-        conn.Write([]byte("PONG"))
-        return
+	case "PING":
+		conn.Write([]byte("PONG"))
+		return
 	default:
 		conn.Write([]byte("ERR:UNKNOWN"))
 		return
