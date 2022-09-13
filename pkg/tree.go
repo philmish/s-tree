@@ -130,41 +130,37 @@ func (t *Tree) SearchSequence(vals values) error {
 	return nil
 }
 
-func (t *Tree) ThreadSafeAddBranch(vals values, wg *sync.WaitGroup) error {
+func (t *Tree) ThreadSafeAddBranch(vals values) error {
 	t.Lock()
 	defer func() {
 		t.Unlock()
-		wg.Done()
 	}()
 	err := t.addBranch(vals)
 	return err
 }
 
-func (t *Tree) ThreadSafeRadixAdd(vals values, wg *sync.WaitGroup) error {
+func (t *Tree) ThreadSafeRadixAdd(vals values) error {
 	t.Lock()
 	defer func() {
 		t.Unlock()
-		wg.Done()
 	}()
 	err := t.radixAdd(vals)
 	return err
 }
 
-func (t *Tree) ThreadSafeSearchNode(val []byte, wg *sync.WaitGroup) (*Node, error) {
+func (t *Tree) ThreadSafeSearchNode(val []byte) (*Node, error) {
 	t.RLock()
 	defer func() {
 		t.RUnlock()
-		wg.Done()
 	}()
 	res, err := t.SearchNode(val)
 	return res, err
 }
 
-func (t *Tree) ThreadSafeSearchSeq(vals values, wg *sync.WaitGroup) error {
+func (t *Tree) ThreadSafeSearchSeq(vals values) error {
 	t.RLock()
 	defer func() {
 		t.RUnlock()
-		wg.Done()
 	}()
 	err := t.SearchSequence(vals)
 	return err

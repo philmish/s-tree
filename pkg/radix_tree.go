@@ -2,7 +2,6 @@ package pkg
 
 import (
 	"strings"
-	"sync"
 )
 
 type RadixTree struct {
@@ -65,14 +64,14 @@ func (rt *RadixTree) SearchStr(data string) error {
 	return rt.SearchSequence(vals)
 }
 
-func (rt *RadixTree) TSafePushStr(data string, wg *sync.WaitGroup) error {
+func (rt *RadixTree) TSafePushStr(data string) error {
 	vals := valsFromString(data)
-	err := rt.ThreadSafeRadixAdd(vals, wg)
+	err := rt.ThreadSafeRadixAdd(vals)
 	return err
 }
 
-func (rt *RadixTree) TSafeSearchStr(data string, wg *sync.WaitGroup) error {
+func (rt *RadixTree) TSafeSearchStr(data string) error {
 	vals := valsFromString(data)
-	err := rt.ThreadSafeSearchSeq(vals, wg)
+	err := rt.ThreadSafeSearchSeq(vals)
 	return err
 }

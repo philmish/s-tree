@@ -79,15 +79,16 @@ func TestThreadSafeAdd(t *testing.T) {
 		{[]byte("abc"), []byte("de")},
 		{[]byte("abc"), []byte("ijk")},
 	}
-	wg := sync.WaitGroup{}
+	wg := new(sync.WaitGroup)
 	for _, i := range data {
 		wg.Add(1)
-		go func(n values, wg *sync.WaitGroup) {
-			err := tree.ThreadSafeAddBranch(n, wg)
+		go func(n values) {
+			err := tree.ThreadSafeAddBranch(n)
 			if err != nil {
 				fmt.Println("Err")
 			}
-		}(i, &wg)
+			wg.Done()
+		}(i)
 	}
 	wg.Wait()
 	if tree.Depth() != 2 {
@@ -102,15 +103,16 @@ func TestThreadSafeRadixAdd(t *testing.T) {
 		{[]byte("a"), []byte("b"), []byte("c"), []byte("d")},
 		{[]byte("a"), []byte("b"), []byte("i"), []byte("j")},
 	}
-	wg := sync.WaitGroup{}
+	wg := new(sync.WaitGroup)
 	for _, i := range data {
 		wg.Add(1)
-		go func(n values, wg *sync.WaitGroup) {
-			err := tree.ThreadSafeRadixAdd(n, wg)
+		go func(n values) {
+			err := tree.ThreadSafeRadixAdd(n)
 			if err != nil {
 				fmt.Println("Err")
 			}
-		}(i, &wg)
+			wg.Done()
+		}(i)
 	}
 	wg.Wait()
 	if tree.Depth() != 4 {
