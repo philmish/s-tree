@@ -53,7 +53,6 @@ func (c *command) execute(t *pkg.RadixTree) string {
 			return fmt.Sprintf("ERROR %s", err.Error())
 		}
 		return "RESULT SUCCESS"
-
 	default:
 		return "ERROR Unknown command"
 	}
