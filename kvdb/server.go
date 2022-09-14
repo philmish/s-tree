@@ -10,7 +10,7 @@ import (
 )
 
 type DBServer struct {
-	t        *pkg.Tree
+	t        *pkg.RadixTree
 	addr     string
 	listener net.Listener
 	quit     chan interface{}
@@ -18,7 +18,7 @@ type DBServer struct {
 }
 
 func NewServer(addr string) *DBServer {
-	t := pkg.NewTree("")
+	t := pkg.NewRadix()
 	db := &DBServer{
 		addr: addr,
 		t:    t,
