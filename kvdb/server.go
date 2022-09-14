@@ -34,14 +34,27 @@ func NewServer(addr string) *DBServer {
 	return db
 }
 
-func pingServer(c net.Conn) {
+func (db *DBServer) handlConn(c net.Conn) {
 	defer c.Close()
 	log.Printf("Connection: [%s]", c.RemoteAddr().Network())
-	msg := []byte("PONG")
-	_, err := c.Write(msg)
+	buf := make([]byte, 256)
+	n, err := c.Read(buf)
 	if err != nil {
-		log.Fatalf("error reading ping message")
+		log.Println("Failed to read from connection")
+		return
 	}
+	cmd, err := parseCommand(buf[:n])
+	if err != nil {
+		log.Printf("Failed to parse command: %s\n", string(buf[:n]))
+		return
+	}
+	resp := cmd.execute(db.t)
+	_, err = c.Write([]byte(resp))
+	if err != nil {
+		log.Printf("Failed to send response: %s", resp)
+		return
+	}
+	return
 }
 
 func (db *DBServer) serve() {
@@ -59,7 +72,7 @@ func (db *DBServer) serve() {
 		} else {
 			db.wg.Add(1)
 			go func() {
-				pingServer(conn)
+				db.handlConn(conn)
 				db.wg.Done()
 			}()
 		}

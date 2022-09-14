@@ -7,7 +7,7 @@ import (
 )
 
 func TestServerStartAndShutdown(t *testing.T) {
-	server := NewServer("TestKvDB")
+	server := NewServer("/tmp/TestKvDB")
 	time.Sleep(time.Second * 3)
 	server.Stop()
 }
@@ -21,9 +21,13 @@ func TestServerPing(t *testing.T) {
 	if err != nil {
 		t.Errorf("error connecting to server: %s", err.Error())
 	}
-	n, err := conn.Read(buf)
+	n, err := conn.Write([]byte("ping"))
 	if err != nil {
 		t.Errorf("error reading from server: %s", err.Error())
+	}
+	n, err = conn.Read(buf)
+	if err != nil {
+		t.Errorf("Failed to read response from server: %s", err.Error())
 	}
 	msg := string(buf[:n])
 	if msg != "PONG" {
