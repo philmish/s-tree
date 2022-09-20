@@ -3,6 +3,7 @@ package kvdb
 import (
 	"fmt"
 	"net"
+	"strings"
 )
 
 type DBClient struct {
@@ -46,4 +47,27 @@ func (client DBClient) Set(key, val string) error {
 		return fmt.Errorf("Something went wrong setting key: %s\n", string(msg))
 	}
 	return nil
+}
+
+func (client DBClient) Get(key string) (string, error) {
+	conn, err := net.Dial("unix", client.Addr)
+	defer conn.Close()
+	if err != nil {
+		return "", err
+	}
+	stmt := fmt.Sprintf("GET %s", key)
+	_, err = conn.Write([]byte(stmt))
+	if err != nil {
+		return "", err
+	}
+	buf := make([]byte, 256)
+	n, err := conn.Read(buf)
+	if err != nil {
+		return "", err
+	}
+	msg := string(buf[:n])
+	if !strings.HasPrefix(msg, "RESULT") {
+		return "", fmt.Errorf("Error getting %s: %s\n", key, msg)
+	}
+	return strings.Split(msg, " ")[1], nil
 }

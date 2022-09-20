@@ -18,7 +18,7 @@ func TestClientPing(t *testing.T) {
 	}
 }
 
-func TestClientSet(t *testing.T) {
+func TestClientSetGet(t *testing.T) {
 	server := NewServer("/tmp/TestKvDB")
 	defer server.Stop()
 
@@ -26,5 +26,12 @@ func TestClientSet(t *testing.T) {
 	err := client.Set("test", "test")
 	if err != nil {
 		t.Errorf("Error seting key and value: %s\n", err)
+	}
+	val, err := client.Get("test")
+	if err != nil {
+		t.Errorf("Error getting value for test: %s\n", err)
+	}
+	if val != "test" {
+		t.Errorf("Expected test, got %s\n", val)
 	}
 }
