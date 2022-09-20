@@ -26,6 +26,8 @@ func (c *command) execute(t *pkg.RadixTree) string {
 			return "ERROR Not enough args"
 		}
 		return addKeyVal(c.args[0], c.args[1], t)
+	case "KEYS":
+		return allKeys(t)
 	default:
 		return "ERROR Unknown command"
 	}
@@ -54,6 +56,19 @@ func getKey(key string, t *pkg.RadixTree) string {
 	}
 	value := node.Children[0].Value
 	return fmt.Sprintf("RESULT %s", string(value))
+}
+
+func allKeys(t *pkg.RadixTree) string {
+	t.RLock()
+	//TODO implement level values fetching in tree
+	defer t.RUnlock()
+	lvl := t.Levels[0]
+	res := make([]string, 0)
+	for _, n := range lvl.Nodes {
+		res = append(res, string(n.Value))
+	}
+	keys := strings.Join(res, ",")
+	return fmt.Sprintf("RESULT %s", keys)
 }
 
 func addKeyVal(key, val string, t *pkg.RadixTree) string {

@@ -71,3 +71,24 @@ func (client DBClient) Get(key string) (string, error) {
 	}
 	return strings.Split(msg, " ")[1], nil
 }
+
+func (client DBClient) Keys() ([]string, error) {
+	conn, err := net.Dial("unix", client.Addr)
+	defer conn.Close()
+	if err != nil {
+		return []string{}, err
+	}
+	_, err = conn.Write([]byte("KEYS"))
+	if err != nil {
+		return []string{}, err
+	}
+	buf := make([]byte, 1048)
+	n, err := conn.Read(buf)
+	if err != nil {
+		return []string{}, err
+	}
+	res := buf[:n]
+	data := strings.Split(string(res), " ")[1]
+	return strings.Split(data, ","), nil
+
+}
