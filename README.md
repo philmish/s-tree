@@ -1,5 +1,7 @@
 # s-tree - a simple tree DS in go
 
+![Tests](https://github.com/philmish/s-tree/actions/workflows/go.yml/badge.svg)
+
 ## Introduction
 To learn about tree data structures I implemented a simple tree and
 a radix-tree in go. As an example, I implemented them in a very basic
