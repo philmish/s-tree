@@ -10,8 +10,8 @@ a client, which communicate over unix domain sockets.
 
 ## Roadmap
 
-- refactor tree pkg for better access to stored values
-- typed nodes for storing other data types than strings in kvdb
-- data persistance to file and data loading from file 
-- benchmarking
-- docs
+- [ ] refactor tree pkg for better access to stored values
+- [ ] typed nodes for storing other data types than strings in kvdb
+- [ ] data persistance to file and data loading from file 
+- [ ] benchmarking
+- [ ] docs
