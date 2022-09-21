@@ -62,6 +62,7 @@ func allKeys(t *pkg.RadixTree) string {
 	t.RLock()
 	//TODO implement level values fetching in tree
 	defer t.RUnlock()
+
 	if len(t.Levels) == 0 {
 		return "RESULT"
 	}

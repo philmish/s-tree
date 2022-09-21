@@ -88,7 +88,10 @@ func (client DBClient) Keys() ([]string, error) {
 		return []string{}, err
 	}
 	res := buf[:n]
-	data := strings.Split(string(res), " ")[1]
-	return strings.Split(data, ","), nil
+	data := strings.Split(string(res), " ")
+	if len(data) < 2 {
+		return []string{}, nil
+	}
+	return strings.Split(data[1], ","), nil
 
 }
