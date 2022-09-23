@@ -130,6 +130,20 @@ func (t *Tree) SearchSequence(vals values) error {
 	return nil
 }
 
+func (t *Tree) GetLevelValues(lvl int) ([]string, error) {
+	if t.Depth() == 0 {
+		return []string{}, fmt.Errorf("Tree is empty")
+	}
+	if lvl > t.Depth() {
+		return []string{}, fmt.Errorf("Level not in tree")
+	}
+	values := make([]string, 0)
+	for _, n := range t.Levels[lvl-1].Nodes {
+		values = append(values, string(n.Value))
+	}
+	return values, nil
+}
+
 func (t *Tree) ThreadSafeAddBranch(vals values) error {
 	t.Lock()
 	defer func() {

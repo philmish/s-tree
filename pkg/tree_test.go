@@ -73,6 +73,34 @@ func TestLeafs(t *testing.T) {
 	}
 }
 
+func TestGetLevelValues(t *testing.T) {
+	tree := createTree()
+	data := []values{
+		{[]byte("a"), []byte("b")},
+		{[]byte("c"), []byte("d")},
+	}
+	err := tree.addBranch(data[0])
+	if err != nil {
+		t.Errorf("Failed to add branch for level values test: %s\n", err.Error())
+	}
+	err = tree.addBranch(data[1])
+	if err != nil {
+		t.Errorf("Failed to add branch for level values test: %s\n", err.Error())
+	}
+	vals, err := tree.GetLevelValues(1)
+	if err != nil {
+		t.Errorf("Failed to fetch level values from lvl 1: %s\n", err.Error())
+	}
+	if len(vals) != 2 {
+		t.Errorf("Expected 2 values in level 1, got %d", len(vals))
+	}
+	for _, v := range vals {
+		if v != "a" && v != "c" {
+			t.Errorf("Expectd a or c as value, got: %s", v)
+		}
+	}
+}
+
 func TestThreadSafeAdd(t *testing.T) {
 	tree := createTree()
 	data := []values{
