@@ -179,3 +179,12 @@ func (t *Tree) ThreadSafeSearchSeq(vals values) error {
 	err := t.SearchSequence(vals)
 	return err
 }
+
+func (t *Tree) ThreadSafeGetLevelValues(lvl int) ([]string, error) {
+	t.RLock()
+	defer func() {
+		t.RUnlock()
+	}()
+	vals, err := t.GetLevelValues(lvl)
+	return vals, err
+}
