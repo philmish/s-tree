@@ -1,4 +1,4 @@
-package pkg
+package typed
 
 import (
 	"testing"
@@ -31,5 +31,20 @@ func TestIntNode(t *testing.T) {
 	}
 	if ret != val {
 		t.Errorf("Expected %d found %d in value of IntNode", val, ret)
+	}
+}
+
+func TestBoolNode(t *testing.T) {
+	val := true
+	node, err := BoolNode(val, nil)
+	if err != nil {
+		t.Errorf("%s\nFailed to create BoolNode", err.Error())
+	}
+	ret, err := node.GetValue()
+	if err != nil {
+		t.Errorf("%s\nFailed to read value of BoolNode", err.Error())
+	}
+	if ret != val {
+		t.Errorf("Expected %v found %v in value of BoolNode", val, ret)
 	}
 }
