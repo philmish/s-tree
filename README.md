@@ -12,9 +12,9 @@ a client, which communicate over unix domain sockets.
 
 - [ ] refactor tree pkg for better access to stored values
 - [ ] typed nodes for storing other data types than strings in kvdb
-    - [ x ] create TypedNode struct
-    - [ x ] create StrNode struct
-    - [ x ] create IntNode struct
+    - [x] create TypedNode struct
+    - [x] create StrNode struct
+    - [x] create IntNode struct
 - [ ] data persistance to file and data loading from file 
 - [ ] benchmarking
 - [ ] docs
