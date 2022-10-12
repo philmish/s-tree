@@ -48,3 +48,18 @@ func TestBoolNode(t *testing.T) {
 		t.Errorf("Expected %v found %v in value of BoolNode", val, ret)
 	}
 }
+
+func TestStrSliceNode(t *testing.T) {
+	val := []string{"Hello World"}
+	node, err := StrSliceNode(val, nil)
+	if err != nil {
+		t.Errorf("%s\nFailed to create StrSliceNode", err.Error())
+	}
+	ret, err := node.GetValue()
+	if err != nil {
+		t.Errorf("%s\nFailed to read value of StrSliceNode", err.Error())
+	}
+	if ret.([]string)[0] != val[0] {
+		t.Errorf("Expected %v found %v in value of StrSliceNode", val, ret)
+	}
+}

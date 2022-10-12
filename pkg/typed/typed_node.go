@@ -12,13 +12,13 @@ var (
 
 // Supported Types
 var (
-	STR      = byte(0)
-	INT      = byte(1)
-	BOOL     = byte(2)
-	STRSLICE = byte(3)
-	// To be implemented
+	STR       = byte(0)
+	INT       = byte(1)
+	BOOL      = byte(2)
+	STRSLICE  = byte(3)
 	INTSLICE  = byte(4)
 	BOOLSLICE = byte(5)
+	// To be implemented
 	STRSTRMAP = byte(6)
 	STRINTMAP = byte(7)
 )
@@ -39,6 +39,12 @@ func (n *TypedNode) GetValue() (interface{}, error) {
 		return decodeInt(n.Value)
 	case BOOL:
 		return decodeBool(n.Value)
+	case STRSLICE:
+		return decodeStrSlice(n.Value)
+	case INTSLICE:
+		return decodeIntSlice(n.Value)
+	case BOOLSLICE:
+		return decodeBoolSlice(n.Value)
 	default:
 		return -1, fmt.Errorf("Unknown type code %d", t)
 	}
