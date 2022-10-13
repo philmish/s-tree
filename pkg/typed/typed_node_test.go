@@ -6,7 +6,7 @@ import (
 
 func TestStrNode(t *testing.T) {
 	val := "Hello World"
-	node, err := StrNode(val, nil)
+	node, err := NewTypedNode(val, nil)
 	if err != nil {
 		t.Errorf("%s\nFailed to create StrNode", err.Error())
 	}
@@ -21,7 +21,7 @@ func TestStrNode(t *testing.T) {
 
 func TestIntNode(t *testing.T) {
 	val := 123
-	node, err := IntNode(val, nil)
+	node, err := NewTypedNode(val, nil)
 	if err != nil {
 		t.Errorf("%s\nFailed to create IntNode", err.Error())
 	}
@@ -36,7 +36,7 @@ func TestIntNode(t *testing.T) {
 
 func TestBoolNode(t *testing.T) {
 	val := true
-	node, err := BoolNode(val, nil)
+	node, err := NewTypedNode(val, nil)
 	if err != nil {
 		t.Errorf("%s\nFailed to create BoolNode", err.Error())
 	}

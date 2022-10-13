@@ -20,10 +20,17 @@ func decodeStrSlice(value []byte) ([]string, error) {
 
 func StrSliceNode(value []string, parent *TypedNode) (*TypedNode, error) {
 	val, err := encodeStrSlice(value)
-	return &TypedNode{
+	if err != nil {
+		return nil, err
+	}
+	n := TypedNode{
 		Parent:   parent,
 		Value:    val,
-		Type:     byte(3),
+		Type:     STRSLICE,
 		Children: make([]*TypedNode, 0),
-	}, err
+	}
+	if parent != nil {
+		parent.Children = append(parent.Children, &n)
+	}
+	return &n, err
 }

@@ -20,10 +20,17 @@ func decodeBool(value []byte) (bool, error) {
 
 func BoolNode(value bool, parent *TypedNode) (*TypedNode, error) {
 	val, err := encodeBool(value)
-	return &TypedNode{
+	if err != nil {
+		return nil, err
+	}
+	n := TypedNode{
 		Parent:   parent,
 		Value:    val,
 		Type:     byte(2),
 		Children: make([]*TypedNode, 0),
-	}, err
+	}
+	if parent != nil {
+		parent.Children = append(parent.Children, &n)
+	}
+	return &n, err
 }

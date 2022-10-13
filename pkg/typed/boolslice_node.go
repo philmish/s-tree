@@ -20,10 +20,17 @@ func decodeBoolSlice(value []byte) ([]bool, error) {
 
 func BoolSliceNode(value []bool, parent *TypedNode) (*TypedNode, error) {
 	val, err := encodeBoolSlice(value)
-	return &TypedNode{
+	if err != nil {
+		return nil, err
+	}
+	n := TypedNode{
 		Parent:   parent,
 		Value:    val,
-		Type:     byte(5),
+		Type:     BOOLSLICE,
 		Children: make([]*TypedNode, 0),
-	}, err
+	}
+	if parent != nil {
+		parent.Children = append(parent.Children, &n)
+	}
+	return &n, err
 }

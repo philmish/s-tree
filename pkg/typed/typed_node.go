@@ -49,3 +49,22 @@ func (n *TypedNode) GetValue() (interface{}, error) {
 		return -1, fmt.Errorf("Unknown type code %d", t)
 	}
 }
+
+func NewTypedNode(value interface{}, parent *TypedNode) (*TypedNode, error) {
+	switch value.(type) {
+	case string:
+		return StrNode(value.(string), parent)
+	case int:
+		return IntNode(value.(int), parent)
+	case bool:
+		return BoolNode(value.(bool), parent)
+	case []string:
+		return StrSliceNode(value.([]string), parent)
+	case []int:
+		return IntSliceNode(value.([]int), parent)
+	case []bool:
+		return BoolSliceNode(value.([]bool), parent)
+	default:
+		return nil, fmt.Errorf("Unsupported data type")
+	}
+}

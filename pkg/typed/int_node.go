@@ -20,10 +20,17 @@ func decodeInt(value []byte) (int, error) {
 
 func IntNode(value int, parent *TypedNode) (*TypedNode, error) {
 	val, err := encodeInt(value)
-	return &TypedNode{
+	if err != nil {
+		return nil, err
+	}
+	n := TypedNode{
 		Parent:   parent,
 		Value:    val,
-		Type:     byte(1),
+		Type:     INT,
 		Children: make([]*TypedNode, 0),
-	}, err
+	}
+	if parent != nil {
+		parent.Children = append(parent.Children, &n)
+	}
+	return &n, err
 }
