@@ -11,11 +11,6 @@ type TypedTree struct {
 	Levels []*TypedTreeLevel
 }
 
-type treeCords struct {
-	level  int
-	branch int
-}
-
 func newTree() *TypedTree {
 	return &TypedTree{
 		Root:   nil,
@@ -30,4 +25,30 @@ func (tt *TypedTree) AddNodeByCords(value interface{}, level, branch int) error 
 	parent := tt.Levels[level].getBranch(branch)
 	_, err := NewTypedNode(value, parent)
 	return err
+}
+
+func (tt *TypedTree) AddBranch(values []interface{}) error {
+	tt.RLock()
+	defer tt.RUnlock()
+	n, err := NewTypedNode(values[0], tt.Root)
+	if err != nil {
+		return err
+	}
+	if tt.Root == nil {
+		tt.Root = n
+		tt.Levels = append(tt.Levels, newLevel())
+	}
+	currLvl := 0
+	for _, val := range values[1:] {
+		n, err = NewTypedNode(val, n)
+		if err != nil {
+			return err
+		}
+		tt.Levels[currLvl].nodes = append(tt.Levels[currLvl].nodes, n)
+		if currLvl+1 == len(tt.Levels) {
+			tt.Levels = append(tt.Levels, newLevel())
+		}
+		currLvl++
+	}
+	return nil
 }
