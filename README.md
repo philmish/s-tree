@@ -15,12 +15,12 @@ a client, which communicate over unix domain sockets.
     - [x] create StrNode type
     - [x] create IntNode type
     - [x] create StrSliceNode type
-    - [ ] create IntSliceNode type
-    - [ ] create BoolSliceNode type
+    - [x] create IntSliceNode type
+    - [x] create BoolSliceNode type
     - [ ] create StrStrMapNode type
     - [ ] create StrIntMapNode type
     - [ ] create StrBoolMapNode type
-    - [ ] create a TypedTree type
+    - [x] create a TypedTree type
 - [ ] refactor kvdb
     - [ ] refactor for use of typed tree
     - [ ] re-implement querying the kvdb
