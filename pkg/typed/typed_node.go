@@ -18,9 +18,10 @@ var (
 	STRSLICE  = byte(3)
 	INTSLICE  = byte(4)
 	BOOLSLICE = byte(5)
-	// To be implemented
 	STRSTRMAP = byte(6)
-	STRINTMAP = byte(7)
+	// To be implemented
+	STRINTMAP  = byte(7)
+	STRBOOLMAP = byte(8)
 )
 
 type TypedNode struct {
@@ -47,6 +48,10 @@ func (n *TypedNode) GetValue() (interface{}, error) {
 		return decodeBoolSlice(n.Value)
 	case STRSTRMAP:
 		return decodeStrStrMap(n.Value)
+	case STRINTMAP:
+		return decodeStrIntMap(n.Value)
+	case STRBOOLMAP:
+		return decodeStrBoolMap(n.Value)
 	default:
 		return -1, fmt.Errorf("Unknown type code %d", t)
 	}
@@ -68,6 +73,10 @@ func NewTypedNode(value interface{}, parent *TypedNode) (*TypedNode, error) {
 		return BoolSliceNode(value.([]bool), parent)
 	case map[string]string:
 		return StrStrMapNode(value.(map[string]string), parent)
+	case map[string]int:
+		return StrIntMapNode(value.(map[string]int), parent)
+	case map[string]bool:
+		return StrBoolMapNode(value.(map[string]bool), parent)
 	default:
 		return nil, fmt.Errorf("Unsupported data type")
 	}

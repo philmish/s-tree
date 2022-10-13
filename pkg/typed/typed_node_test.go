@@ -110,3 +110,37 @@ func TestStrStrMapNode(t *testing.T) {
 		t.Errorf("Expected %v found %v in value of StrStrMapNode", val, ret)
 	}
 }
+
+func TestStrIntMapNode(t *testing.T) {
+	val := map[string]int{
+		"Hello": 1,
+	}
+	node, err := StrIntMapNode(val, nil)
+	if err != nil {
+		t.Errorf("%s\nFailed to create StrIntMapNode", err.Error())
+	}
+	ret, err := node.GetValue()
+	if err != nil {
+		t.Errorf("%s\nFailed to read value of StrIntMapNode", err.Error())
+	}
+	if ret.(map[string]int)["Hello"] != val["Hello"] {
+		t.Errorf("Expected %v found %v in value of StrIntMapNode", val, ret)
+	}
+}
+
+func TestStrBoolMapNode(t *testing.T) {
+	val := map[string]bool{
+		"Hello": true,
+	}
+	node, err := StrBoolMapNode(val, nil)
+	if err != nil {
+		t.Errorf("%s\nFailed to create StrBoolMapNode", err.Error())
+	}
+	ret, err := node.GetValue()
+	if err != nil {
+		t.Errorf("%s\nFailed to read value of StrBoolMapNode", err.Error())
+	}
+	if ret.(map[string]bool)["Hello"] != val["Hello"] {
+		t.Errorf("Expected %v found %v in value of StrBoolMapNode", val, ret)
+	}
+}

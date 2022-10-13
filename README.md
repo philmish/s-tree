@@ -10,22 +10,23 @@ a client, which communicate over unix domain sockets.
 
 ## Roadmap
 
-- [ ] typed nodes for storing other data types than strings in kvdb
+- [x] typed nodes for storing other data types than strings in kvdb
     - [x] create TypedNode type
     - [x] create StrNode type
     - [x] create IntNode type
     - [x] create StrSliceNode type
     - [x] create IntSliceNode type
     - [x] create BoolSliceNode type
-    - [ ] create StrStrMapNode type
-    - [ ] create StrIntMapNode type
-    - [ ] create StrBoolMapNode type
+    - [x] create StrStrMapNode type
+    - [x] create StrIntMapNode type
+    - [x] create StrBoolMapNode type
     - [x] create a TypedTree type
 - [ ] refactor kvdb
+    - [ ] implement typed radix tree
     - [ ] refactor for use of typed tree
     - [ ] re-implement querying the kvdb
-- [ ] data persistance to file and data loading from file 
-    - [ ] figure out how to which file type fits
-    - [ ] implement transforming in-memory data to fitting format
+- [ ] data persistance for kvdb to file and data loading from file 
+    - [ ] implement encoding db data to JSON
+    - [ ] implement loading db data from JSON
 - [ ] benchmarking
 - [ ] docs
