@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-// Sizes
+// Max sizes for map and slice type data
 var (
 	MAXSLICE = 1024
 	MAXMAP   = 1024
@@ -45,6 +45,8 @@ func (n *TypedNode) GetValue() (interface{}, error) {
 		return decodeIntSlice(n.Value)
 	case BOOLSLICE:
 		return decodeBoolSlice(n.Value)
+	case STRSTRMAP:
+		return decodeStrStrMap(n.Value)
 	default:
 		return -1, fmt.Errorf("Unknown type code %d", t)
 	}
@@ -64,6 +66,8 @@ func NewTypedNode(value interface{}, parent *TypedNode) (*TypedNode, error) {
 		return IntSliceNode(value.([]int), parent)
 	case []bool:
 		return BoolSliceNode(value.([]bool), parent)
+	case map[string]string:
+		return StrStrMapNode(value.(map[string]string), parent)
 	default:
 		return nil, fmt.Errorf("Unsupported data type")
 	}

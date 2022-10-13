@@ -93,3 +93,20 @@ func TestBoolSliceNode(t *testing.T) {
 		t.Errorf("Expected %v found %v in value of BoolSliceNode", val, ret)
 	}
 }
+
+func TestStrStrMapNode(t *testing.T) {
+	val := map[string]string{
+		"Hello": "World",
+	}
+	node, err := StrStrMapNode(val, nil)
+	if err != nil {
+		t.Errorf("%s\nFailed to create StrStrMapNode", err.Error())
+	}
+	ret, err := node.GetValue()
+	if err != nil {
+		t.Errorf("%s\nFailed to read value of StrStrMapNode", err.Error())
+	}
+	if ret.(map[string]string)["Hello"] != val["Hello"] {
+		t.Errorf("Expected %v found %v in value of StrStrMapNode", val, ret)
+	}
+}
