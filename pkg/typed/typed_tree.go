@@ -11,6 +11,18 @@ type TypedTree struct {
 	Levels []*TypedTreeLevel
 }
 
+func (tt *TypedTree) Leafs() []*TypedNode {
+	var res []*TypedNode
+	for _, lvl := range tt.Levels {
+		res = append(res, lvl.getLeafs()...)
+	}
+	return res
+}
+
+func (tt *TypedTree) Depth() int {
+	return len(tt.Levels)
+}
+
 func newTree() *TypedTree {
 	return &TypedTree{
 		Root:   nil,

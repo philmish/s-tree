@@ -16,4 +16,40 @@ func TestAddBranch(t *testing.T) {
 	if err != nil {
 		t.Errorf("%s\nFailed to add branch", err.Error())
 	}
+	if tree.Depth() != 4 {
+		t.Errorf("Expected depth of 4, found %d", tree.Depth())
+	}
+}
+
+func TestLeafs(t *testing.T) {
+	tree := newTree()
+	vals1 := []interface{}{
+		"Hello",
+		1,
+		true,
+		[]string{"Wo", "rld"},
+	}
+	vals2 := []interface{}{
+		"A",
+		true,
+	}
+	err := tree.AddBranch(vals1)
+	if err != nil {
+		t.Errorf("%s\nFailed to add first branch", err.Error())
+	}
+	err = tree.AddBranch(vals2)
+	if err != nil {
+		t.Errorf("%s\nFailed to add second branch", err.Error())
+	}
+	leafs := tree.Leafs()
+	for _, l := range leafs {
+		v, err := l.GetValue()
+		if err != nil {
+			t.Errorf("Failed to read node value of leaf: %s", err.Error())
+		}
+		t.Logf("Node value: %v", v)
+	}
+	if len(leafs) != 2 {
+		t.Errorf("Expected 2 leafs found %d", len(leafs))
+	}
 }
