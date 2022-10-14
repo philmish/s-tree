@@ -53,3 +53,34 @@ func TestLeafs(t *testing.T) {
 		t.Errorf("Expected 2 leafs found %d", len(leafs))
 	}
 }
+
+func TestMerge(t *testing.T) {
+	tree1 := newTree()
+	tree2 := newTree()
+	vals1 := []interface{}{
+		"Hello",
+		1,
+		true,
+		[]string{"Wo", "rld"},
+	}
+	vals2 := []interface{}{
+		"A",
+		true,
+	}
+	err := tree1.AddBranch(vals1)
+	if err != nil {
+		t.Errorf("%s\nFailed to add branch to first tree", err.Error())
+	}
+	err = tree2.AddBranch(vals2)
+	if err != nil {
+		t.Errorf("%s\nFailed to add branch to second tree", err.Error())
+	}
+	err = tree1.Merge(tree2, 2, 0)
+	if err != nil {
+		t.Errorf("%s\nFailed to Merge trees", err.Error())
+	}
+	if tree1.Depth() != 6 {
+		t.Errorf("Expected depth of 6 found %d", tree1.Depth())
+	}
+
+}
