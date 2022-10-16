@@ -93,5 +93,4 @@ func (client DBClient) Keys() ([]string, error) {
 		return []string{}, nil
 	}
 	return strings.Split(data[1], ","), nil
-
 }

@@ -23,6 +23,10 @@ func (tt *TypedTree) Depth() int {
 	return len(tt.Levels)
 }
 
+func (tt *TypedTree) IsEmpty() bool {
+	return tt.Root == nil
+}
+
 func newTree() *TypedTree {
 	return &TypedTree{
 		Root:   nil,
@@ -31,6 +35,8 @@ func newTree() *TypedTree {
 }
 
 func (tt *TypedTree) AddNodeByCords(value interface{}, level, branch int) error {
+	tt.RLock()
+	defer tt.RUnlock()
 	if len(tt.Levels) < level || len(tt.Levels[level].nodes) < branch {
 		return fmt.Errorf("Target node does not exist")
 	}
@@ -46,17 +52,20 @@ func (tt *TypedTree) AddBranch(values []interface{}) error {
 	if err != nil {
 		return err
 	}
-	if tt.Root == nil {
+	if tt.IsEmpty() {
 		tt.Root = n
 		tt.Levels = append(tt.Levels, newLevel())
 	}
 	currLvl := 0
 	for _, val := range values[1:] {
+		if tt.Depth()-1 < currLvl {
+			tt.Levels = append(tt.Levels, newLevel())
+		}
 		n, err = NewTypedNode(val, n)
 		if err != nil {
 			return err
 		}
-		tt.Levels[currLvl].nodes = append(tt.Levels[currLvl].nodes, n)
+		tt.Levels[currLvl].addNode(n)
 		if currLvl+1 == len(tt.Levels) {
 			tt.Levels = append(tt.Levels, newLevel())
 		}
