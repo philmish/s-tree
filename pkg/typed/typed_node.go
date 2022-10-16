@@ -12,14 +12,13 @@ var (
 
 // Supported Types
 var (
-	STR       = byte(0)
-	INT       = byte(1)
-	BOOL      = byte(2)
-	STRSLICE  = byte(3)
-	INTSLICE  = byte(4)
-	BOOLSLICE = byte(5)
-	STRSTRMAP = byte(6)
-	// To be implemented
+	STR        = byte(0)
+	INT        = byte(1)
+	BOOL       = byte(2)
+	STRSLICE   = byte(3)
+	INTSLICE   = byte(4)
+	BOOLSLICE  = byte(5)
+	STRSTRMAP  = byte(6)
 	STRINTMAP  = byte(7)
 	STRBOOLMAP = byte(8)
 )

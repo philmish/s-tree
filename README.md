@@ -22,7 +22,7 @@ a client, which communicate over unix domain sockets.
     - [x] create StrBoolMapNode type
     - [x] create a TypedTree type
 - [ ] refactor kvdb
-    - [ ] implement typed radix tree
+    - [x] implement typed radix tree
     - [ ] refactor for use of typed tree
     - [ ] re-implement querying the kvdb
 - [ ] data persistance for kvdb to file and data loading from file 
