@@ -25,4 +25,10 @@ func TestAddSequence(t *testing.T) {
 	if err != nil {
 		t.Errorf("%s\nFailed to add second sequence to typed radix", err.Error())
 	}
+	if tr.Depth() != 4 {
+		t.Errorf("Expected radix tree to have Depth of 4, found %d", tr.Depth())
+	}
+	if tr.Levels[1].Length() != 1 {
+		t.Errorf("Expected radix tree level 1 to contain 1 node, found %d", tr.Levels[1].Length())
+	}
 }
