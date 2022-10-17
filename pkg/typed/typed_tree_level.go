@@ -4,6 +4,10 @@ type TypedTreeLevel struct {
 	nodes []*TypedNode
 }
 
+func (tl *TypedTreeLevel) Length() int {
+	return len(tl.nodes)
+}
+
 func newLevel() *TypedTreeLevel {
 	return &TypedTreeLevel{
 		nodes: make([]*TypedNode, 0),

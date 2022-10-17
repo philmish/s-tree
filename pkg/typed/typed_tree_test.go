@@ -79,8 +79,8 @@ func TestMerge(t *testing.T) {
 	if err != nil {
 		t.Errorf("%s\nFailed to Merge trees", err.Error())
 	}
-	if tree1.Depth() != 6 {
-		t.Errorf("Expected depth of 6 found %d", tree1.Depth())
+	if tree1.Depth() != 5 {
+		t.Errorf("Expected depth of 5 found %d", tree1.Depth())
 	}
 
 }

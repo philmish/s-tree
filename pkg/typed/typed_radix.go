@@ -34,12 +34,14 @@ func (tr *TypedRadix) AddSequence(seq []interface{}) error {
 		}
 		if exists != nil {
 			nodeCursor = exists
+			lvlCursor++
 			continue
 		}
 		n, err := NewTypedNode(val, nodeCursor)
 		if err != nil {
 			return err
 		}
+		nodeCursor = n
 		tr.Levels[lvlCursor].addNode(n)
 		lvlCursor++
 	}

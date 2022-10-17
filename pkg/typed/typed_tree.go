@@ -48,27 +48,26 @@ func (tt *TypedTree) AddNodeByCords(value interface{}, level, branch int) error 
 func (tt *TypedTree) AddBranch(values []interface{}) error {
 	tt.RLock()
 	defer tt.RUnlock()
-	n, err := NewTypedNode(values[0], tt.Root)
-	if err != nil {
-		return err
-	}
 	if tt.IsEmpty() {
+		n, err := NewTypedNode("ROOT", tt.Root)
+		if err != nil {
+			return err
+		}
 		tt.Root = n
 		tt.Levels = append(tt.Levels, newLevel())
 	}
 	currLvl := 0
-	for _, val := range values[1:] {
+	nodeCursor := tt.Root
+	for _, val := range values {
 		if tt.Depth()-1 < currLvl {
 			tt.Levels = append(tt.Levels, newLevel())
 		}
-		n, err = NewTypedNode(val, n)
+		n, err := NewTypedNode(val, nodeCursor)
 		if err != nil {
 			return err
 		}
 		tt.Levels[currLvl].addNode(n)
-		if currLvl+1 == len(tt.Levels) {
-			tt.Levels = append(tt.Levels, newLevel())
-		}
+		nodeCursor = n
 		currLvl++
 	}
 	return nil
@@ -86,17 +85,19 @@ func (tt *TypedTree) Merge(data *TypedTree, level, branch int) error {
 		return fmt.Errorf("No node found on lvl %d branch %d ", level, branch)
 	}
 	currLvl := level + 1
-	if currLvl >= tt.Depth()-1 {
-		tt.Levels = append(tt.Levels, newLevel())
-		tt.Levels[currLvl].nodes = append(tt.Levels[currLvl].nodes, data.Levels[0].nodes...)
-		currLvl++
-	}
+	/*
+		if currLvl > tt.Depth()-1 {
+			tt.Levels = append(tt.Levels, newLevel())
+			tt.Levels[currLvl].nodes = append(tt.Levels[currLvl].nodes, data.Levels[0].nodes...)
+			currLvl++
+		}
+	*/
 	if data.Depth() > 1 {
-		for _, lvl := range data.Levels[1:] {
-			tt.Levels[currLvl].nodes = append(tt.Levels[currLvl].nodes, lvl.nodes...)
-			if currLvl == tt.Depth()-1 {
+		for _, lvl := range data.Levels {
+			if currLvl > tt.Depth()-1 {
 				tt.Levels = append(tt.Levels, newLevel())
 			}
+			tt.Levels[currLvl].nodes = append(tt.Levels[currLvl].nodes, lvl.nodes...)
 			currLvl++
 		}
 
