@@ -45,24 +45,27 @@ func TestNextToken(t *testing.T) {
 
 	l := qla.NewLexer(input)
 	runLexerTest(l, testCases, t)
+}
+func TestKeywords(t *testing.T) {
+	input := "ADD(STR Hello = STR World);GET(STR Hello)"
 
-	/*
-		for i, tt := range testCases {
-			tok := l.NextToken()
+	testCases := []tCase{
+		{qla.ADD, "ADD"},
+		{qla.BRACEL, "("},
+		{qla.STR, "STR"},
+		{qla.IDENT, "Hello"},
+		{qla.EQUALS, "="},
+		{qla.STR, "STR"},
+		{qla.IDENT, "World"},
+		{qla.BRACER, ")"},
+		{qla.SEMICOLON, ";"},
+		{qla.GET, "GET"},
+		{qla.BRACEL, "("},
+		{qla.STR, "STR"},
+		{qla.IDENT, "Hello"},
+		{qla.BRACER, ")"},
+	}
 
-			if tok.Type != tt.expectedT {
-				t.Fatalf(
-					"test case [%d] - wrong token type - expected %q go %q",
-					i, tt.expectedT, tok.Type,
-				)
-			}
-
-			if tok.Literal != tt.expectedLit {
-				t.Fatalf(
-					"test case [%d] - wrong token literal - expected %q go %q",
-					i, tt.expectedLit, tok.Literal,
-				)
-			}
-		}
-	*/
+	l := qla.NewLexer(input)
+	runLexerTest(l, testCases, t)
 }
