@@ -13,6 +13,7 @@ type Token struct {
 const (
 	ILLEGAL = "ILLEGAL"
 	EOF     = "EOF"
+	IDENT   = "IDENT"
 
 	// Delimiter
 	COLON     = ":"
@@ -43,3 +44,24 @@ const (
 	UPSERT = "UPSERT"
 	DELETE = "DELETE"
 )
+
+var keywords = map[string]TokenType{
+	"ADD":    ADD,
+	"GET":    GET,
+	"UPDATE": UPDATE,
+	"UPSERT": UPSERT,
+	"DELETE": DELETE,
+	"STR":    STR,
+	"INT":    INT,
+	"BOOL":   BOOL,
+	"STRS":   STRS,
+	"INTS":   INTS,
+	"BOOLS":  BOOLS,
+}
+
+func LookupIdentifier(ident string) TokenType {
+	if tok, ok := keywords[ident]; ok {
+		return tok
+	}
+	return IDENT
+}
