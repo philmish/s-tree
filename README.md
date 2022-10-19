@@ -22,8 +22,10 @@ a client, which communicate over unix domain sockets.
     - [x] create StrBoolMapNode type
     - [x] create a TypedTree type
 - [ ] re-implement querying the kvdb via a query language (qla)
-    - [ ] implement tokenizing for qla
+    - [x] implement tokenizing for qla
     - [ ] implement types for qla
+    - [ ] implement basic ast
+    - [ ] implement statements
     - [ ] implement parsing for qla
 - [ ] refactor kvdb
     - [x] implement typed radix tree

@@ -80,7 +80,6 @@ func (l *Lexer) readIdentifier() string {
 		l.readChar()
 	}
 	return l.input[position:l.cursor]
-
 }
 
 func (l *Lexer) readNumber() string {
