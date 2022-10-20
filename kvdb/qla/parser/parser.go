@@ -27,6 +27,23 @@ func (p *Parser) nextToken() {
 	p.peekToken = p.l.NextToken()
 }
 
+func (p *Parser) curTokenIs(t qla.TokenType) bool {
+	return p.currToken.Type == t
+}
+
+func (p *Parser) peekTokenIs(t qla.TokenType) bool {
+	return p.peekToken.Type == t
+}
+
+func (p *Parser) expectPeek(t qla.TokenType) bool {
+	if p.peekTokenIs(t) {
+		p.nextToken()
+		return true
+	} else {
+		return false
+	}
+}
+
 func (p *Parser) ParseProgramm() *ast.Program {
 	//TODO Implement recursive parsing
 	return nil
