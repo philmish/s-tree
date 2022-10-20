@@ -5,7 +5,7 @@ import (
 )
 
 type AddStatement struct {
-	Token     qla.TokenType
+	Token     qla.Token
 	KeyType   *qla.TokenType
 	Key       string
 	ValueType qla.TokenType
@@ -13,4 +13,5 @@ type AddStatement struct {
 }
 
 // Satisfy StatementNode interface
-func (as *AddStatement) statementNode() {}
+func (as *AddStatement) statementNode()       {}
+func (as *AddStatement) TokenLiteral() string { return as.Token.Literal }

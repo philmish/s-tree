@@ -49,8 +49,42 @@ func (p *Parser) ParseProgramm() *ast.Program {
 	return nil
 }
 
-func (p *Parser) parseAddStatement() *ast.AddStatement {
-	stmt := &ast.AddStatement{
-		Token: p.currToken,
+func (p *Parser) parseStatement() ast.Statement {
+	switch p.currToken.Type {
+	case qla.ADD:
+		return p.parseAddStatement()
+	default:
+		return nil
 	}
+}
+
+func (p *Parser) parseAddStatement() *ast.AddStatement {
+	stmt := &ast.AddStatement{Token: p.currToken}
+
+	if !qla.IsTypeToken(p.peekToken.Type) {
+		return nil
+	}
+	p.nextToken()
+	stmt.KeyType = &p.currToken.Type
+
+	if !p.expectPeek(qla.IDENT) {
+		return nil
+	}
+	stmt.Key = p.currToken.Literal
+
+	if !qla.IsTypeToken(p.peekToken.Type) {
+		return nil
+	}
+	p.nextToken()
+	stmt.ValueType = p.currToken.Type
+
+	if !p.expectPeek(qla.IDENT) {
+		return nil
+	}
+	stmt.Value = p.currToken.Literal
+
+	for !p.curTokenIs(qla.SEMICOLON) {
+		p.nextToken()
+	}
+	return stmt
 }
