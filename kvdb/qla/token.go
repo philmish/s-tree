@@ -59,6 +59,24 @@ var keywords = map[string]TokenType{
 	"BOOLS":  BOOLS,
 }
 
+var Types = []TokenType{
+	STR,
+	INT,
+	BOOL,
+	STRS,
+	INTS,
+	BOOLS,
+}
+
+func IsTypeToken(tt TokenType) bool {
+	for _, token := range Types {
+		if tt == token {
+			return true
+		}
+	}
+	return false
+}
+
 func LookupIdentifier(ident string) TokenType {
 	if tok, ok := keywords[ident]; ok {
 		return tok

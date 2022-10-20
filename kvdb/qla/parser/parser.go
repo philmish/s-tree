@@ -48,3 +48,9 @@ func (p *Parser) ParseProgramm() *ast.Program {
 	//TODO Implement recursive parsing
 	return nil
 }
+
+func (p *Parser) parseAddStatement() *ast.AddStatement {
+	stmt := &ast.AddStatement{
+		Token: p.currToken,
+	}
+}
