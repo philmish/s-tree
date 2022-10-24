@@ -6,7 +6,7 @@ import (
 
 type AddStatement struct {
 	Token     qla.Token
-	KeyType   *qla.TokenType
+	KeyType   qla.TokenType
 	Key       string
 	ValueType qla.TokenType
 	Value     string

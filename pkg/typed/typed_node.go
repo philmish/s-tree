@@ -1,6 +1,7 @@
 package typed
 
 import (
+	"bytes"
 	"fmt"
 )
 
@@ -28,6 +29,10 @@ type TypedNode struct {
 	Value    []byte
 	Type     byte
 	Children []*TypedNode
+}
+
+func (n *TypedNode) IsEqualTo(node *TypedNode) bool {
+	return n.Type == node.Type && bytes.Compare(n.Value, node.Value) == 0
 }
 
 func (n *TypedNode) GetValue() (interface{}, error) {

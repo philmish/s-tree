@@ -85,13 +85,6 @@ func (tt *TypedTree) Merge(data *TypedTree, level, branch int) error {
 		return fmt.Errorf("No node found on lvl %d branch %d ", level, branch)
 	}
 	currLvl := level + 1
-	/*
-		if currLvl > tt.Depth()-1 {
-			tt.Levels = append(tt.Levels, newLevel())
-			tt.Levels[currLvl].nodes = append(tt.Levels[currLvl].nodes, data.Levels[0].nodes...)
-			currLvl++
-		}
-	*/
 	if data.Depth() > 1 {
 		for _, lvl := range data.Levels {
 			if currLvl > tt.Depth()-1 {
@@ -107,4 +100,11 @@ func (tt *TypedTree) Merge(data *TypedTree, level, branch int) error {
 		newParent.Children = append(newParent.Children, node)
 	}
 	return nil
+}
+
+func (tt *TypedTree) GetNodeWithValInLevel(val interface{}, lvl int) (*TypedNode, error) {
+	if lvl > tt.Depth()-1 {
+		return nil, fmt.Errorf("Tree only has a depth of %d. Level %d doesnt exist.", tt.Depth(), lvl)
+	}
+	return tt.Levels[lvl].findNodeWithValue(val)
 }

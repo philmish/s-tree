@@ -19,6 +19,30 @@ func TestStrNode(t *testing.T) {
 	}
 }
 
+func TestIsEqualTo(t *testing.T) {
+	val := "Hello World"
+	node, err := NewTypedNode(val, nil)
+	if err != nil {
+		t.Errorf("%s\nFailed to create first StrNode for is equal.", err.Error())
+	}
+	val2 := "Hello World"
+	node2, err := NewTypedNode(val2, nil)
+	if err != nil {
+		t.Errorf("%s\nFailed to create second StrNode for is equal.", err.Error())
+	}
+	if !node.IsEqualTo(node2) {
+		t.Errorf("Expected nodes to be equal.")
+	}
+	val3 := "World"
+	node3, err := NewTypedNode(val3, nil)
+	if err != nil {
+		t.Errorf("%s\nFailed to create third StrNode for is equal.", err.Error())
+	}
+	if node.IsEqualTo(node3) || node2.IsEqualTo(node3) {
+		t.Errorf("Expected nodes 1 and 2 to not be equal to node 3.")
+	}
+}
+
 func TestIntNode(t *testing.T) {
 	val := 123
 	node, err := NewTypedNode(val, nil)

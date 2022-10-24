@@ -65,7 +65,7 @@ func (p *Parser) parseAddStatement() *ast.AddStatement {
 		return nil
 	}
 	p.nextToken()
-	stmt.KeyType = &p.currToken.Type
+	stmt.KeyType = p.currToken.Type
 
 	if !p.expectPeek(qla.IDENT) {
 		return nil
