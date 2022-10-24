@@ -42,11 +42,7 @@ func (lvl *TypedTreeLevel) findNodeWithValue(val interface{}) (*TypedNode, error
 		return nil, err
 	}
 	for _, n := range lvl.nodes {
-		v, err := n.GetValue()
-		if err != nil {
-			return nil, err
-		}
-		if n.Type == cursor.Type && val == v {
+		if n.IsEqualTo(cursor) {
 			return n, nil
 		}
 	}

@@ -82,5 +82,26 @@ func TestMerge(t *testing.T) {
 	if tree1.Depth() != 5 {
 		t.Errorf("Expected depth of 5 found %d", tree1.Depth())
 	}
+}
 
+func TestFindNodeWithValueInLevel(t *testing.T) {
+	tree := newTree()
+	vals1 := []interface{}{
+		"Hello",
+		1,
+		true,
+		[]string{"Wo", "rld"},
+	}
+	err := tree.AddBranch(vals1)
+	if err != nil {
+		t.Errorf("%s\nFailed to add first branch", err.Error())
+	}
+	res, err := tree.GetNodeWithValInLevel("Hello", 0)
+	if err != nil {
+		t.Errorf("%s\nFailed to Get node.", err.Error())
+	} else if res == nil {
+		t.Errorf("Expected to find node with value %s in lvl %d", "Hello", 0)
+	} else {
+		return
+	}
 }
