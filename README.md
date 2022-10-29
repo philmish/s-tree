@@ -23,10 +23,11 @@ a client, which communicate over unix domain sockets.
     - [x] create a TypedTree type
 - [ ] re-implement querying the kvdb via a query language (qla)
     - [x] implement tokenizing for qla
-    - [ ] implement types for qla
+    - [ ] implement type expressions for qla
     - [ ] implement basic ast
     - [ ] implement statements
     - [ ] implement parsing for qla
+    - [ ] implement parsing error aggregation
 - [ ] refactor kvdb
     - [x] implement typed radix tree
     - [ ] refactor for use of typed tree
