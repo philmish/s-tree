@@ -1,6 +1,8 @@
 package parser
 
 import (
+	"fmt"
+
 	"github.com/philmish/s-tree/kvdb/qla"
 	"github.com/philmish/s-tree/kvdb/qla/ast"
 )
@@ -10,16 +12,25 @@ type Parser struct {
 
 	currToken qla.Token
 	peekToken qla.Token
+
+	errors []string
 }
 
 func New(l *qla.Lexer) *Parser {
-	p := &Parser{l: l}
+	p := &Parser{
+		l:      l,
+		errors: []string{},
+	}
 
 	// Read two times to set peekToken
 	p.nextToken()
 	p.nextToken()
 
 	return p
+}
+
+func (p *Parser) Errors() []string {
+	return p.errors
 }
 
 func (p *Parser) nextToken() {
@@ -40,8 +51,14 @@ func (p *Parser) expectPeek(t qla.TokenType) bool {
 		p.nextToken()
 		return true
 	} else {
+		p.peekError(t)
 		return false
 	}
+}
+
+func (p *Parser) peekError(t qla.TokenType) {
+	msg := fmt.Sprintf("Expected next token to be %s got %s.", t, p.peekToken.Type)
+	p.errors = append(p.errors, msg)
 }
 
 func (p *Parser) ParseProgramm() *ast.Program {

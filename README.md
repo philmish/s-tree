@@ -27,7 +27,7 @@ a client, which communicate over unix domain sockets.
     - [ ] implement basic ast
     - [ ] implement statements
     - [ ] implement parsing for qla
-    - [ ] implement parsing error aggregation
+    - [x] implement parsing error aggregation
 - [ ] refactor kvdb
     - [x] implement typed radix tree
     - [ ] refactor for use of typed tree
