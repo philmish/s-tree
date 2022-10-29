@@ -45,8 +45,18 @@ func (p *Parser) expectPeek(t qla.TokenType) bool {
 }
 
 func (p *Parser) ParseProgramm() *ast.Program {
-	//TODO Implement recursive parsing
-	return nil
+	programm := &ast.Program{}
+	programm.Statements = []ast.Statement{}
+
+	for p.currToken.Type != qla.EOF {
+		stmt := p.parseStatement()
+		if stmt != nil {
+			programm.Statements = append(programm.Statements, stmt)
+		}
+
+		p.nextToken()
+	}
+	return programm
 }
 
 func (p *Parser) parseStatement() ast.Statement {
